@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+
+  api:
+    image: richarvey/nginx-php-fpm
+    container_name: api
+    env_file: .env
+    dns: 119.29.29.29
+    ports:
+      - 80:80
+    links:
+      - mysql
+      - redis
+    volumes:
+      - .:/var/www/html
+
+  mysql:
+    image: mysql
+    container_name: api-mysql
+    env_file: .env
+    ports:
+      - 3306:3306
+    volumes:
+      - /tmp/data/api/mysql:/var/lib/mysql
+
+  redis:
+    image: redis
+    container_name: api-redis
+    env_file: .env
+    ports:
+      - 6379:6379
+    volumes:
+      - /tmp/data/api/redis:/data
